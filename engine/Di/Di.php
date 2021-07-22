@@ -1,5 +1,5 @@
 <?php
-namespace Enhine/Di;
+namespace Engine\Di;
 
 
 class Di 
@@ -8,8 +8,13 @@ class Di
 	 * @var array
 	 */
 	private $container = [];
-	
-	public function set ($key, $value) {
+
+    /**
+     * @param $key
+     * @param $value
+     * @return $this
+     */
+    public function set ($key, $value) {
 		$this->container[$key] = $value;
 		return $this;
 	}
@@ -21,12 +26,12 @@ class Di
 			return $this->container[$key];
 	}
 	/**
-	 *	params $key
-	 *	return mixed
+	 * @params $key
+	 * return mixed
 	 */
 	public function has($key)
 	{
-		return isset($this->container[$key]);
+		return isset($this->container[$key]) ? $this->container[$key] : null;
 	}
 }
 

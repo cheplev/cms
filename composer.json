@@ -1,0 +1,16 @@
+{
+    "name": "chep/cms",
+    "authors": [
+        {
+            "name": "Cheplev Valery",
+            "email": "vcheplev@gmail.com"
+        }
+    ],
+    "require": {},
+	"autoload": {
+			"psr-4": {
+					"Engine\\": "engine",
+					"Engine\\Di\\": "engine/Di"
+			}
+	}
+}
