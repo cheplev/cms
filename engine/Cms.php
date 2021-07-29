@@ -2,6 +2,10 @@
 
 namespace Engine;
 
+/**
+ * Class Cms
+ * @package Engine
+ */
 class Cms
 {
 	/**
@@ -9,6 +13,10 @@ class Cms
 	 */
 	private $di;
 
+    /**
+     * @var
+     */
+    public $router;
 
 	/**
 	 * @param $di
@@ -16,9 +24,15 @@ class Cms
 	public function __construct($di)
 	{
 		$this->di = $di;
+		$this->router = $this->di->get('router');
 	}
 
+    /**
+     * Run Cms
+     */
     public function run() {
+		$this->router->add('home', '/', 'HomeController:index');
+		$this->router->add('project', '/', 'HomeController:index', 'POST');
 		print_r($this->di);
 	}
 }
