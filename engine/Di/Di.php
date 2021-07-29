@@ -18,6 +18,7 @@ class Di
 		$this->container[$key] = $value;
 		return $this;
 	}
+
 	/**
 	 * @param $key
 	 * return mixed
@@ -25,6 +26,7 @@ class Di
 	public function get ($key) {
 			return $this->container[$key];
 	}
+
 	/**
 	 * @params $key
 	 * return mixed
