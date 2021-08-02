@@ -2,6 +2,7 @@
 
 namespace Engine;
 
+use Engine\Core\Router\DispatchedRoute;
 use Engine\Helper\Common;
 
 /**
@@ -10,33 +11,50 @@ use Engine\Helper\Common;
  */
 class Cms
 {
-	/**
-	 * @var $di
-	 */
-	private $di;
+    /**
+     * @var $di
+     */
+    private $di;
 
     /**
      * @var
      */
     public $router;
 
-	/**
-	 * @param $di
-	 */
-	public function __construct($di)
-	{
-		$this->di = $di;
-		$this->router = $this->di->get('router');
-	}
+    /**
+     * @param $di
+     */
+    public function __construct($di)
+    {
+        $this->di = $di;
+        $this->router = $this->di->get('router');
+    }
 
     /**
      * Run Cms
      */
-    public function run() {
-		$this->router->add('home', '/', 'HomeController:index');
-		$this->router->add('product', '/user/12', 'ProductController:index');
+    public function run()
+    {
+        try {
+            $this->router->add('home', '/', 'HomeController:index');
+            $this->router->add('news', '/news', 'HomeController:news');
 
-		$routerDispatch = $this->router->dispatch(Common::getMethod(), Common::getPathUrl());
-		print_r($routerDispatch);
-	}
+            $routerDispatch = $this->router->dispatch(Common::getMethod(), Common::getPathUrl());
+
+            if ($routerDispatch === null) {
+                $routerDispatch = new DispatchedRoute('ErrorController:page404');
+            }
+
+            list($class, $action) = explode(':', $routerDispatch->getController(), 2);
+
+            $controller = '\\Cms\\Controller\\' . $class;
+            $parameters = $routerDispatch->getParameters();
+            call_user_func_array([new $controller($this->di), $action], $parameters);
+
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            exit;
+        }
+
+    }
 }
