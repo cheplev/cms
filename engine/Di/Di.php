@@ -24,7 +24,7 @@ class Di
 	 * return mixed
 	 */
 	public function get ($key) {
-			return $this->container[$key];
+		return $this->container[$key];
 	}
 
 	/**

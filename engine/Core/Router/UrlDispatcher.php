@@ -60,7 +60,55 @@ class UrlDispatcher
      */
     public function register($method, $pattern, $controller)
     {
-        $this->routes[strtoupper($method)][$pattern] = $controller;
+        $convert = $this->convertPattern($pattern);
+        $this->routes[strtoupper($method)][$convert] = $controller;
+    }
+
+    /**
+     * covertPattern
+     *
+     * @param  mixed $pattern
+     * @return void
+     */
+    private function convertPattern($pattern) 
+    {
+        if (strpos($pattern, '(') === false)
+        {
+            return $pattern;
+        }
+
+        return preg_replace_callback('#\((\w+):(\w+)\)#', [$this, 'replacePattern'], $pattern);
+    }
+    
+    /**
+     * replacePattern
+     *
+     * @param  mixed $pattern
+     * @return mixed
+     */
+    private function replacePattern($matches)
+    {
+        return '(?<' .$matches[1]. '>' . strtr($matches[2], $this->patterns) . ')';
+    }
+    
+        
+    /**
+     * processParam
+     *
+     * @param  mixed $parameters
+     * @return array
+     */
+    private function processParam($parameters) 
+    {
+        foreach($parameters as $k => $v)
+        {
+            if (is_int($k))
+            {
+                unset($parameters[$k]);
+            }
+        }
+
+        return $parameters;
     }
 
     /**
@@ -93,7 +141,7 @@ class UrlDispatcher
 
             if (preg_match($pattern, $uri, $parameters))
             {
-                return new DispatchedRoute($controller, $parameters);
+                return new DispatchedRoute($controller, $this->processParam($parameters));
             }
         }
     }
