@@ -2,7 +2,6 @@
 
 namespace Cms\Controller;
 
-
 /**
  * Class HomeController
  * @package Cms\Controller
@@ -11,7 +10,9 @@ class HomeController extends CmsController
 {
     public function index()
     {
-        echo 'Index Page';
+        $data = ['name' => 'Artem'];
+        $this->view->render('index', $data);
+        // echo 'Index Page';
     }
 
     public function news($id)
