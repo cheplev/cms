@@ -29,7 +29,9 @@ class View
             throw new \InvalidArgumentException("Template {$template} not found in {$templatePath}");
         }
        
+        $this->theme->setData($vars);
         extract($vars);
+
         ob_start();
         ob_implicit_flush(0);
        

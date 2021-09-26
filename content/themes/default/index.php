@@ -1,6 +1,5 @@
 <?php
-
-// echo 'Index template ';
-var_export($this);
-
- $this->theme->header();
+$this->theme->header();
+echo 'Index template ' . $name . '<br>';
+// var_export($this);
+$this->theme->footer();
